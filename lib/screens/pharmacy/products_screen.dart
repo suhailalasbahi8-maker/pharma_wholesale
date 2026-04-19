@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../providers/cart_provider.dart';
 import '../../services/firestore_service.dart';
+import '../../providers/cart_provider.dart';
 import '../../models/product_model.dart';
 import '../../widgets/product_card.dart';
 
@@ -39,6 +39,8 @@ class ProductsScreen extends StatelessWidget {
                   Icon(Icons.medical_services, size: 80, color: Colors.grey),
                   SizedBox(height: 16),
                   Text('لا توجد منتجات', style: TextStyle(fontSize: 18, color: Colors.grey)),
+                  SizedBox(height: 8),
+                  Text('أضف منتجات من Firebase Console أولاً', style: TextStyle(color: Colors.grey)),
                 ],
               ),
             );
