@@ -19,7 +19,6 @@ class CartItem {
     this.quantity = 1,
   });
 
-  // تحويل من ProductModel إلى CartItem
   factory CartItem.fromProduct(ProductModel product) {
     return CartItem(
       id: product.id,
@@ -30,4 +29,6 @@ class CartItem {
       requiresPrescription: product.requiresPrescription,
     );
   }
+
+  double get totalPrice => price * quantity;
 }
