@@ -22,11 +22,34 @@ class ProductsScreen extends StatelessWidget {
         stream: _firestoreService.getProducts(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 16),
+                  Text('جاري تحميل المنتجات...'),
+                ],
+              ),
+            );
           }
           
           if (snapshot.hasError) {
-            return Center(child: Text('خطأ: ${snapshot.error}'));
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error_outline, size: 64, color: Colors.red),
+                  SizedBox(height: 16),
+                  Text('حدث خطأ: ${snapshot.error}'),
+                  SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text('إعادة المحاولة'),
+                  ),
+                ],
+              ),
+            );
           }
           
           final products = snapshot.data ?? [];
@@ -38,9 +61,15 @@ class ProductsScreen extends StatelessWidget {
                 children: [
                   Icon(Icons.medical_services, size: 80, color: Colors.grey),
                   SizedBox(height: 16),
-                  Text('لا توجد منتجات', style: TextStyle(fontSize: 18, color: Colors.grey)),
+                  Text(
+                    'لا توجد منتجات',
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
                   SizedBox(height: 8),
-                  Text('أضف منتجات من Firebase Console أولاً', style: TextStyle(color: Colors.grey)),
+                  Text(
+                    'أضف منتجات من Firebase Console أولاً',
+                    style: TextStyle(color: Colors.grey),
+                  ),
                 ],
               ),
             );
