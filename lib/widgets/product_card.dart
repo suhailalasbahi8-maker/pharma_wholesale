@@ -3,8 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/product_model.dart';
 import '../models/cart_item.dart';
 import '../providers/cart_provider.dart';
-import 'category_helpers.dart';
-import '../screens/pharmacy/product_details_screen.dart';  // أضف هذا الاستيراد
+import '../screens/pharmacy/product_details_screen.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductModel product;
@@ -19,11 +18,9 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    String category = _getCategoryFromName(product.name);
     
     return GestureDetector(
       onTap: () {
-        // الانتقال إلى شاشة التفاصيل
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -42,12 +39,12 @@ class ProductCard extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: getCategoryColor(category),
+                  color: Colors.teal.shade100,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                 ),
                 child: Stack(
                   children: [
-                    Icon(getCategoryIcon(category), size: 50, color: Colors.white),
+                    Icon(Icons.medication, size: 50, color: Colors.teal),
                     if (product.requiresPrescription)
                       Positioned(
                         top: 8,
@@ -58,7 +55,10 @@ class ProductCard extends StatelessWidget {
                             color: Colors.orange,
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: Text('وصفة', style: TextStyle(fontSize: 10, color: Colors.white)),
+                          child: Text(
+                            'وصفة',
+                            style: TextStyle(fontSize: 10, color: Colors.white),
+                          ),
                         ),
                       ),
                   ],
@@ -92,7 +92,7 @@ class ProductCard extends StatelessWidget {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      '${product.price} جنيه',
+                      '${product.price.toStringAsFixed(2)} جنيه',
                       style: TextStyle(color: Colors.teal, fontWeight: FontWeight.bold),
                     ),
                     Text(
@@ -120,7 +120,10 @@ class ProductCard extends StatelessWidget {
                           minimumSize: Size(0, 32),
                           backgroundColor: isInCart ? Colors.grey : Colors.teal,
                         ),
-                        child: Text(isInCart ? 'موجود' : 'أضف للسلة', style: TextStyle(fontSize: 12)),
+                        child: Text(
+                          isInCart ? 'موجود' : 'أضف للسلة',
+                          style: TextStyle(fontSize: 12),
+                        ),
                       ),
                     ),
                   ],
@@ -131,19 +134,5 @@ class ProductCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _getCategoryFromName(String name) {
-    if (name.contains('باراسيتامول') || name.contains('إيبوبروفين') || name.contains('ديكلوفيناك')) {
-      return 'مسكنات';
-    } else if (name.contains('أموكسيسيلين') || name.contains('أزيثروميسين')) {
-      return 'مضادات حيوية';
-    } else if (name.contains('فيتامين')) {
-      return 'فيتامينات';
-    } else if (name.contains('سيتريزين')) {
-      return 'حساسية';
-    } else {
-      return 'أدوية';
-    }
   }
 }
