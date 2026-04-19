@@ -4,13 +4,31 @@ import '../models/product_model.dart';
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // جلب جميع المنتجات من Firebase
+  // جلب جميع المنتجات النشطة
   Stream<List<ProductModel>> getProducts() {
-    return _firestore.collection('products').snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return ProductModel.fromMap(doc.id, doc.data());
-      }).toList();
-    });
+    return _firestore
+        .collection('products')
+        .where('isActive', isEqualTo: true)
+        .snapshots()
+        .map((snapshot) {
+          return snapshot.docs.map((doc) {
+            return ProductModel.fromMap(doc.id, doc.data());
+          }).toList();
+        });
+  }
+
+  // جلب منتجات شركة معينة
+  Stream<List<ProductModel>> getProductsByCompany(String companyId) {
+    return _firestore
+        .collection('products')
+        .where('companyId', isEqualTo: companyId)
+        .where('isActive', isEqualTo: true)
+        .snapshots()
+        .map((snapshot) {
+          return snapshot.docs.map((doc) {
+            return ProductModel.fromMap(doc.id, doc.data());
+          }).toList();
+        });
   }
 
   // إضافة منتج جديد
@@ -23,8 +41,8 @@ class FirestoreService {
     await _firestore.collection('products').doc(id).update(data);
   }
 
-  // حذف منتج
+  // حذف منتج (تعطيله)
   Future<void> deleteProduct(String id) async {
-    await _firestore.collection('products').doc(id).delete();
+    await _firestore.collection('products').doc(id).update({'isActive': false});
   }
 }
