@@ -18,7 +18,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'سوق الأدوية بالجملة',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(primarySwatch: Colors.teal),
+        theme: ThemeData(
+          primarySwatch: Colors.teal,
+          useMaterial3: true,
+        ),
         home: PharmacyHomeScreen(),
       ),
     );
